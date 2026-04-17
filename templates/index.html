@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>E-Matdaan</title>
+
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo.png') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+
+</head>
+
+<body>
+
+<header class="top-header">
+
+    <!-- Circular Logo -->
+    <a href="/home" class="logo-link">
+        <img src="/static/assets/logo.png" alt="Logo">
+    </a>
+
+    <!-- Curved Banner -->
+    <nav class="banner-nav">
+        <div class="menu">
+            <a href="/home">Home</a>
+            <a href="/register_page">Register</a>
+            <a href="/login">Login</a>
+            <a href="/admin_login">Admin</a>
+            <a href="/result">Result</a>
+            <a href="#" onclick="openContact()">Contact Us</a>
+
+        </div>
+    </nav>
+
+</header>
+
+
+<!-- contact  us popup -->
+<div id="contactModal" class="modal">
+
+<div class="modal-box">
+
+<span onclick="closeContact()" class="close-btn">&times;</span>
+
+<h2>Contact Us</h2>
+
+<p>📞 +91 6388433409</p>
+<p>📧 support@ematdaan.com</p>
+
+</div>
+
+</div>
+
+<!-- Notice Bar -->
+<div class="notice-bar">
+
+  <div class="notice-label">📢 Important Notice</div>
+
+  <div class="notice-wrapper">
+    <div class="notice-track">
+      {% for n in notices %}
+        <span>{{ n.notice }}</span> •
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+</section>
+
+<!-- Message Box-->
+
+<section class="trust-strip">
+
+<div class="trust-box">🇮🇳 Government Supported Platform</div>
+
+<div class="trust-box">🔒 End-to-End Secure Voting</div>
+
+<div class="trust-box">🗳 Transparent Election Process</div>
+
+<div class="trust-box">📄 Digital Citizen Services</div>
+
+</section>
+
+<section class="authority-message">
+
+<div class="authority-left">
+    <img src="/static/assets/Person.jpg" alt="Authority">
+</div>
+
+<div class="authority-right">
+
+<h2>Message from Election Authority</h2>
+
+<p>
+Welcome to E-Matdaan Portal. Our mission is to strengthen democracy through
+secure, transparent, and technology-driven voting systems for every citizen.
+</p>
+
+<p>
+We encourage all eligible voters to register, verify their details, and
+actively participate in upcoming elections.
+</p>
+
+<p class="sign">— Chief Election Officer</p>
+
+</div>
+
+</section>
+
+<!-- MAIN SECTION -->
+ <!-- Welcome / About Portal Section -->
+
+<section class="about-section">
+
+<div class="about-container">
+
+<div class="about-text">
+<h1>Welcome to E-Matdaan</h1>
+
+<p>
+E-Matdaan is a modern and secure digital voting platform designed to simplify
+the election process across India. Our system enables eligible citizens to
+register, verify their details, and participate in elections with transparency,
+accuracy, and ease.
+</p>
+
+<p>
+With state-wise database integration, E-Matdaan supports multiple regions,
+constituencies, and election types under one smart platform. It reduces manual
+errors, long queues, and delays while promoting faster and more reliable voting.
+</p>
+
+<p>
+Our mission is to strengthen democracy by making voting accessible,
+user-friendly, and technology-driven for every citizen.
+</p>
+
+<a href="/register_page" class="about-btn">Register Now</a>
+</div>
+
+<div class="about-image">
+<img src="/static/assets/welcome.png">
+</div>
+
+</div>
+
+</section>
+<section class="section">
+
+<div class="calculator-box">
+
+<h2>Age Calculator</h2>
+
+<input type="date" id="dob">
+
+<button onclick="calculateAge()">Calculate</button>
+
+<div id="result"></div>
+
+</div>
+
+</section>
+
+<!-- =========================
+     ACTIVE ELECTION SECTION
+========================= -->
+
+<section class="state-election-section">
+
+<h1>Check Current Active Elections</h1>
+
+<p class="subtitle">
+Select your state to view active or upcoming elections
+</p>
+
+<select id="stateSelect" onchange="showElection()">
+<option value="">-- Choose State --</option>
+<option value="ap">Andhra Pradesh</option>
+<option value="ar">Arunachal Pradesh</option>
+<option value="as">Assam</option>
+<option value="br">Bihar</option>
+<option value="ct">Chhattisgarh</option>
+<option value="ga">Goa</option>
+<option value="gj">Gujarat</option>
+<option value="hr">Haryana</option>
+<option value="hp">Himachal Pradesh</option>
+<option value="jh">Jharkhand</option>
+<option value="ka">Karnataka</option>
+<option value="kl">Kerala</option>
+<option value="mp">Madhya Pradesh</option>
+<option value="mh">Maharashtra</option>
+<option value="mn">Manipur</option>
+<option value="ml">Meghalaya</option>
+<option value="mz">Mizoram</option>
+<option value="nl">Nagaland</option>
+<option value="or">Odisha</option>
+<option value="pb">Punjab</option>
+<option value="rj">Rajasthan</option>
+<option value="sk">Sikkim</option>
+<option value="tn">Tamil Nadu</option>
+<option value="tg">Telangana</option>
+<option value="tr">Tripura</option>
+<option value="up">Uttar Pradesh</option>
+<option value="ut">Uttarakhand</option>
+<option value="wb">West Bengal</option>
+</select>
+
+<div class="election-card" id="electionCard">
+
+<h2 id="title">No Election Selected</h2>
+
+<p><strong>State:</strong> <span id="state"></span></p>
+
+<p><strong>Type:</strong> <span id="type"></span></p>
+
+<p><strong>Assembly:</strong> <span id="assembly"></span></p>
+
+<p><strong>Seat No:</strong> <span id="seat"></span></p>
+
+<p class="status" id="status"></p>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+
+<div class="footer-content">
+
+<div>
+<h3>E-Matdaan</h3>
+<p>Secure Online Voting Platform</p>
+</div>
+
+<div>
+<h3>Quick Links</h3>
+<a href="/home">Home</a><br>
+<a href="/register_page">Register</a><br>
+<a href="/admin_login">Login</a><br>
+<a href="/result">Result</a>
+</div>
+
+<div>
+<h3>Contact</h3>
+<p>Email: support@ematdaan.com</p>
+<p>Phone: +91 6388433409</p>
+</div>
+
+</div>
+
+<p class="copy">© 2026 E-Matdaan | All Rights Reserved</p>
+
+</footer>
+
+<!-- JAVASCRIPT -->
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+
+</body>
+</html>
