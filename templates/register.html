@@ -33,65 +33,70 @@
 <section class="main-section">
 
     <div class="register-card">
+        {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-box">
+      {% for msg in messages %}
+        <p>{{ msg }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
         <h2>Voter Registration</h2>
         <p>Create your secure digital voting account</p>
 
         <form action="/register" method="POST">
 
-            <input type="text" name="name" placeholder="Full Name" required>
-            
-            <input list="states" name="state_code" placeholder="State Code" required>
-            <datalist id="states">
-            <option value="Andhra Pradesh">
-            <option value="Arunachal Pradesh">
-            <option value="Assam">
-            <option value="Bihar">
-            <option value="Chhattisgarh">
-            <option value="Goa">
-            <option value="Gujarat">
-            <option value="Haryana">
-            <option value="Himachal Pradesh">
-            <option value="Jharkhand">
-            <option value="Karnataka">
-            <option value="Kerala">
-            <option value="Madhya Pradesh">
-            <option value="Maharashtra">
-            <option value="Manipur">
-            <option value="Meghalaya">
-            <option value="Mizoram">
-            <option value="Nagaland">
-            <option value="Odisha">
-            <option value="Punjab">
-            <option value="Rajasthan">
-            <option value="Sikkim">
-            <option value="Tamil Nadu">
-            <option value="Telangana">
-            <option value="Tripura">
-            <option value="Uttar Pradesh">
-            <option value="Uttarakhand">
-            <option value="West Bengal">
+    <input type="text" name="name" placeholder="Full Name" required>
 
-            <!-- Union Territories -->
-            <option value="Andaman and Nicobar Islands">
-            <option value="Chandigarh">
-            <option value="Dadra and Nagar Haveli and Daman and Diu">
-            <option value="Delhi">
-            <option value="Jammu and Kashmir">
-            <option value="Ladakh">
-            <option value="Lakshadweep">
-            <option value="Puducherry">
-        </datalist>
+    <!-- STATE LIST (FIXED) -->
+    <input list="states" name="state_name" placeholder="Select State" required>
 
-            <input type="text" name="constituency" placeholder="Constituency" required>
+    <datalist id="states">
+        <option value="andhra_pradesh">
+        <option value="arunachal_pradesh">
+        <option value="assam">
+        <option value="bihar">
+        <option value="chhattisgarh">
+        <option value="goa">
+        <option value="gujarat">
+        <option value="haryana">
+        <option value="himachal_pradesh">
+        <option value="jharkhand">
+        <option value="karnataka">
+        <option value="kerala">
+        <option value="madhya_pradesh">
+        <option value="maharashtra">
+        <option value="manipur">
+        <option value="meghalaya">
+        <option value="mizoram">
+        <option value="nagaland">
+        <option value="odisha">
+        <option value="punjab">
+        <option value="rajasthan">
+        <option value="sikkim">
+        <option value="tamil_nadu">
+        <option value="telangana">
+        <option value="tripura">
+        <option value="uttar_pradesh">
+        <option value="uttarakhand">
+        <option value="west_bengal">
+        <option value="delhi">
+        <option value="jammu_and_kashmir">
+        <option value="ladakh">
+    </datalist>
 
-            <input type="text" name="phone" placeholder="Mobile Number" required>
+    <input type="text" name="constituency" placeholder="Constituency" required>
 
-            <input type="text" name="epic" placeholder="EPIC Number" required>
+    <input type="text" name="phone" placeholder="Mobile Number" required>
 
-            <input type="password" name="password" placeholder="Password" required>
+    <input type="text" name="epic_no" placeholder="EPIC Number" required>
 
-            <button type="submit">Register Now</button>
+    <input type="password" name="password" placeholder="Password" required>
+
+    <button type="submit">Register</button>
+
 
             <a href="/login" class="login-link">
                 Already Registered? Login
