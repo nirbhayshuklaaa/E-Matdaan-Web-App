@@ -33,15 +33,39 @@ def get_notices():
 
     return data
 
+# HOME PAGE
+@app.route("/")
+@app.route("/home")
+def home():
+    notices = get_notices()
+    return render_template("index.html", notices=notices)
+
+# PAGES
+
+@app.route("/register_page")
+def register_page():
+    return render_template("register.html")
+
+@app.route("/login_page")
+def login_page():
+    return render_template("login.html")
+
+@app.route("/admin_login")
+def admin_login():
+    return render_template("admin_login.html")
+
+# REGISTER USER IN SELECTED STATE DB
+
+
 # GET SELECTED STATE DATABASE
-def get_state_db(state_code):
+def get_state_db(state_name):
 
     main_db = get_main_db()
     cursor = main_db.cursor(dictionary=True)
 
     cursor.execute(
-        "SELECT db_name FROM states WHERE state_code=%s",
-        (state_code,)
+        "SELECT db_name FROM states WHERE LOWER(state_name)=%s",
+        (state_name.strip().lower(),)
     )
 
     row = cursor.fetchone()
@@ -59,42 +83,21 @@ def get_state_db(state_code):
         database=row["db_name"]
     )
 
-# HOME PAGE
-@app.route("/")
-@app.route("/home")
-def home():
-    notices = get_notices()
-    return render_template("index.html", notices=notices)
-# PAGES
 
-@app.route("/register_page")
-def register_page():
-    return render_template("register.html")
-
-@app.route("/login_page")
-def login_page():
-    return render_template("login.html")
-
-@app.route("/admin_login")
-def admin_login():
-    return render_template("admin_login.html")
-
-# REGISTER USER IN SELECTED STATE DB
+# REGISTER ROUTE
 @app.route("/register", methods=["POST"])
 def register():
 
     try:
         name = request.form.get("name")
-        father_name=request.form.get("father_name")
-        constituency=request.form.get("constituency")
+        state_name = request.form.get("state_name")
+        constituency = request.form.get("constituency")
         phone = request.form.get("phone")
-        password = request.form.get("password")
         epic_no = request.form.get("epic_no")
-        adhar_no = request.form.get("adhar_no")
-        state_code = request.form.get("state")
+        password = request.form.get("password")
 
-        # Connect selected state DB
-        db = get_state_db(state_code)
+        # CONNECT STATE DB
+        db = get_state_db(state_name)
 
         if not db:
             flash("❌ Invalid State Selected")
@@ -102,25 +105,29 @@ def register():
 
         cursor = db.cursor()
 
-        # Check voter exists in voter table
+        # CHECK EPIC EXISTS
         cursor.execute(
-            "SELECT epic_no FROM Eci_voters WHERE epic_no=%s",
-            (epic_no,)
-        )
+                "SELECT epic_no FROM Eci_voters WHERE epic_no=%s",
+                (epic_no,)
+                )
 
-        if not cursor.fetchone():
+        result = cursor.fetchone()
+
+        if result is None:
+            cursor.close()
+            db.close()
             flash("❌ EPIC not found in voter database")
             return redirect("/register_page")
 
-        # Hash Password
+        # HASH PASSWORD
         hashed_pass = generate_password_hash(password)
 
-        # Insert into users table
+        # INSERT USER
         cursor.execute("""
-            INSERT INTO voters
-            (name, father_name,constituency, phone, password, epic_no, adhar_no)
-            VALUES (%s,%s,%s,%s,%s,%s,%s)
-        """, (name, father_name, constituency, phone, hashed_pass, epic_no, adhar_no))
+            INSERT INTO reg_voters
+            (name, constituency, phone, password_hash, epic_no)
+            VALUES (%s,%s,%s,%s,%s)
+        """, (name, constituency, phone, hashed_pass, epic_no))
 
         db.commit()
 
@@ -132,16 +139,17 @@ def register():
 
     except mysql.connector.Error as err:
 
+        print("MYSQL ERROR:", err)
+
         if err.errno == errorcode.ER_DUP_ENTRY:
-            flash("❌ Already Registered with this EPIC / Phone")
+            flash("❌ Already Registered")
         else:
-            print(err)
-            flash("❌ Database Error")
+            flash("Database Error !")
 
         return redirect("/register_page")
 
     except Exception as e:
-        print(e)
+        print("GENERAL ERROR:", e)
         flash("❌ Something Went Wrong")
         return redirect("/register_page")
 
