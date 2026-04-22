@@ -51,38 +51,61 @@ def register_page():
 def login_page():
     return render_template("login.html")
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST","GET"])
 def login():
-
     try:
         epic_no = request.form.get("epic_no")
         state_name = request.form.get("state_name")
         password = request.form.get("password")
 
+        # Basic validation
+        if not epic_no or not state_name or not password:
+            flash("❌ All fields are required")
+            return redirect("/login_page")
+
+        # Get state database
         db = get_state_db(state_name)
 
         if not db:
-            flash("❌ Inctive State Selected")
+            flash("❌ Inactive State Selected")
             return redirect("/login_page")
 
         cursor = db.cursor(dictionary=True)
 
-        # fetch full user
+        # Fetch voter details
         cursor.execute(
-            "SELECT password_hash FROM reg_voters WHERE epic_no=%s",
+            """
+            SELECT name, password_hash, constituency
+            FROM reg_voters
+            WHERE epic_no = %s
+            LIMIT 1
+            """,
             (epic_no,)
         )
 
         result = cursor.fetchone()
 
+        # User not found
         if not result:
             flash("❌ EPIC not found in voter database")
             return redirect("/login_page")
 
+        # Extract values after checking result
+        name = result["name"]
         stored_hash = result["password_hash"]
+        constituency = result["constituency"]
 
-
+        # Password verification
         if check_password_hash(stored_hash, password):
+
+            # Session create
+            session.clear()
+            session["name"] = name
+            session["epic_no"] = epic_no
+            session["state_name"] = state_name
+            session["constituency"] = constituency
+            session["logged_in"] = True
+
             flash("✅ Login Successful!")
             return redirect("/user_dashboard")
 
@@ -99,18 +122,105 @@ def login():
 def admin_login():
     return render_template("admin_login.html")
 
-@app.route("/user_dashboard",methods=['GET','POST'])
-def user_dashboard():
+
+@app.route("/cast_vote", methods=["POST"])
+def cast_vote():
     try:
-        return render_template("user_dashboard.html")
-        epic_no=request.form.get("name")
-        
-    
+        state_name = request.form.get("state_name")
+        epic_no = request.form.get("epic_no")
+        party_name = request.form.get("party_name")
+        constituency = request.form.get("constituency")
 
+        db = get_state_db(state_name)
 
-    except Exception as e :
-        print("Something went wrong !")
+        if not db:
+            flash("Database Failed To Load!")
+            return redirect("/user_dashboard")
+
+        cursor = db.cursor()
+
+        # Correct SQL Query
+        cursor.execute(
+            "INSERT INTO votes (epic_no, party_name, constituency) VALUES (%s, %s, %s)",
+            (epic_no, party_name, constituency)
+        )
+
+        db.commit()   # Important
+
+        cursor.close()
+        db.close()
+
+        flash("✅ Vote Cast Successfully!")
+        return redirect("/user_dashboard")
+
+    except mysql.connector.Error as err:
+        print("MYSQL ERROR:", err)
+
+        if err.errno == errorcode.ER_DUP_ENTRY:
+            flash("❌ Already Voted")
+        else:
+            flash("Database Error!")
+
+        return redirect("/user_dashboard")
+
+    except Exception as e:
+        print("Something went wrong!", e)
+        flash("Something Went Wrong!")
         return redirect("/login")
+
+
+# USER DASHBOARD
+@app.route("/user_dashboard")
+def user_dashboard():
+
+    # Login check
+    if "logged_in" not in session:
+        flash("❌ Please login first")
+        return redirect("/login_page")
+
+    try:
+        state_name = session["state_name"]
+        constituency = session["constituency"]
+
+        db = get_state_db(state_name)
+        cursor = db.cursor(dictionary=True)
+
+        # Fetch only candidates of logged in user's constituency
+        cursor.execute("""
+            SELECT 
+                id,
+                name,
+                party_name,
+                symbol,
+                constituency
+            FROM candidates
+            WHERE constituency = %s
+            AND status='active'
+            ORDER BY name ASC
+        """, (constituency,))
+
+        candidates = cursor.fetchall()
+
+        return render_template(
+            "user_dashboard.html",
+            name=session["name"],
+            epic_no=session["epic_no"],
+            state_name=state_name,
+            constituency=constituency,
+            candidates=candidates
+        )
+
+    except Exception as e:
+        print("DASHBOARD ERROR:", e)
+        flash("❌ Unable to load dashboard")
+        return redirect("/login_page")
+
+# Logout Route
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("✅ Logged Out Successfully")
+    return redirect("/home")
 
 # GET SELECTED STATE DATABASE
 def get_state_db(state_name):

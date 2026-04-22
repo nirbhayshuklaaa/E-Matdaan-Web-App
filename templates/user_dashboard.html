@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Matdaan | Smart Dashboard</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='user_dashboard.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script defer src="{{ url_for('static', filename='user_dashboard.js') }}"></script>
+</head>
+
+<body>
+
+<div class="bg-blur one"></div>
+<div class="bg-blur two"></div>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="logo">🗳️</div>
+        <div>
+            <h2>E-Matdaan</h2>
+            <span>Digital Voting Portal</span>
+        </div>
+    </div>
+
+    <div class="top-actions">
+        <div class="clock" id="liveClock"></div>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+</header>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-box">
+      {% for message in messages %}
+        <div class="flash-msg">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main class="wrapper">
+
+<section class="hero-card">
+    <div class="left">
+        <p class="mini">Verified Citizen</p>
+        <h1>Welcome, {{ name }}</h1>
+        <p class="desc">Your vote is your voice. Select your candidate wisely and securely.</p>
+
+        <div class="meta-grid">
+            <div class="meta-box">
+                <span>EPIC Number</span>
+                <strong>{{ epic_no }}</strong>
+            </div>
+
+            <div class="meta-box">
+                <span>State</span>
+                <strong>{{ state_name }}</strong>
+            </div>
+
+            <div class="meta-box">
+                <span>Constituency</span>
+                <strong class="meta-box">{{constituency}}</strong>
+            </div>
+
+            <div class="meta-box">
+                <span>Status</span>
+                <strong class="green">{{status}}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="security-card">
+            <h3>Security Check</h3>
+            <ul>
+                <li>✔ Session Protected</li>
+                <li>✔ One Vote Only</li>
+                <li>✔ Encrypted Submission</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="vote-section">
+
+<div class="section-head">
+    <div>
+        <h2>Cast Your Vote</h2>
+        <p>Select one candidate to continue</p>
+    </div>
+
+    <div class="search-box">
+        <h1 vote Carefully ></h1>
+    </div>
+</div>
+
+{% for candidate in candidates %}
+
+<div class="candidate-card">
+
+    <h2>{{ candidate.name }}</h2>
+    <p>{{ candidate.party_name }}</p>
+
+
+    <!-- Put Form Here -->
+    <form action="/cast_vote" method="POST">
+        <input type="hidden" name="epic_no" value="{{ epic_no }}">
+        <input type="hidden" name="party_name" value="{{ candidate.party_name }}">
+        <input type="hidden" name="constituency" value="{{ constituency }}">
+        <input type="hidden" name="state_name" value="{{ state_name }}">
+
+        <button type="submit" class="vote-btn">
+            Vote Now
+        </button>
+    </form>
+
+</div>
+
+{% endfor %}
+
+</div>
+</form>
+
+<p class="bottom-note">⚠ Once submitted, vote cannot be changed.</p>
+
+</section>
+
+</main>
+
+</body>
+</html>
