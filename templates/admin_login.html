@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Admin Login</title>
+
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/logo.png') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+
+<div class="main-box">
+
+    <!-- Left Side -->
+    <div class="left-panel">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" class="logo">
+
+        <h1>E-Matdaan</h1>
+        <p>Smart Secure Election Management System</p>
+
+        <div class="security-box">
+            <i class="fa-solid fa-fingerprint"></i>
+            <span>Biometric Aadhaar Authentication Enabled</span>
+        </div>
+
+        <div class="security-box">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>256-bit Encrypted Admin Access</span>
+        </div>
+
+        <div class="security-box">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Live Vote Monitoring Dashboard</span>
+        </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="right-panel">
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash-msg">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>Admin Login</h2>
+        <p class="subtitle">Authorized Personnel Only</p>
+
+        <form action="/admin_login_d" method="post">
+
+            <div class="input-box">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="username" placeholder="User ID" required>
+            </div>
+
+            <div class="input-box">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <div class="input-box">
+                <i class="fa-solid fa-id-card"></i>
+                <input type="text" name="adhar_no" placeholder="Aadhaar Number" required>
+            </div>
+
+            <!-- Fingerprint UI -->
+            <div class="fingerprint-area">
+                <div class="scan-circle">
+                    <i class="fa-solid fa-fingerprint"></i>
+                </div>
+                <p>Authenticate Yourself</p>
+            </div>
+
+            <button type="submit">Secure Login</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

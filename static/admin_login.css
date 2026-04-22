@@ -1,0 +1,137 @@
+/* admin_login.css */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Arial, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#00172d,#003566,#00509d);
+    padding:20px;
+    position:relative;
+    overflow:hidden;
+}
+.flash-msg{
+    background:#ff4d4d;
+    color:white;
+    padding:12px 18px;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-weight:bold;
+    text-align:center;
+    max-width:380px;
+    width:100%;
+}
+
+/* Animated background circles */
+body::before,
+body::after{
+    content:"";
+    position:absolute;
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+    z-index:0;
+}
+
+body::before{
+    top:-120px;
+    left:-100px;
+}
+
+body::after{
+    bottom:-120px;
+    right:-100px;
+}
+
+/* Form card */
+form{
+    width:100%;
+    max-width:380px;
+    background:rgba(255,255,255,0.10);
+    padding:35px 30px;
+    border-radius:22px;
+    backdrop-filter:blur(14px);
+    box-shadow:0 20px 45px rgba(0,0,0,0.30);
+    position:relative;
+    z-index:2;
+}
+
+/* Heading */
+h2{
+    position:absolute;
+    top:calc(50% - 235px);
+    color:#fff;
+    font-size:30px;
+    font-weight:700;
+    z-index:2;
+    text-align:center;
+    width:100%;
+    left:0;
+}
+
+/* Inputs */
+input{
+    width:100%;
+    height:50px;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    padding:0 15px;
+    font-size:15px;
+    margin-bottom:16px;
+    background:rgba(255,255,255,0.92);
+    color:#111;
+    transition:0.3s;
+}
+
+input:focus{
+    transform:scale(1.02);
+    box-shadow:0 0 0 3px rgba(0,198,255,0.25);
+}
+
+/* Button */
+button{
+    width:100%;
+    height:50px;
+    border:none;
+    border-radius:35px;
+    background:linear-gradient(90deg,#00c6ff,#0072ff);
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 25px rgba(0,198,255,0.35);
+}
+
+/* Mobile responsive */
+@media(max-width:480px){
+
+    h2{
+        top:calc(50% - 225px);
+        font-size:24px;
+    }
+
+    form{
+        padding:28px 20px;
+        border-radius:18px;
+    }
+
+    input,
+    button{
+        height:46px;
+        font-size:14px;
+    }
+}
