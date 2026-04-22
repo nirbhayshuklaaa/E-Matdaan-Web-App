@@ -722,47 +722,107 @@ color:#2e7d32;
 
 /* RESPONSIVE */
 
-@media(max-width:768px){
+@media (max-width: 992px){
 
-.state-election-section{
-padding:50px 15px;
+.top-header{
+    height:auto;
+    padding:10px 0;
 }
 
-.state-election-section h1{
-font-size:28px;
+.banner-nav{
+    width:96%;
+    height:95px;
+    margin:auto;
+    border-radius:50px 0 0 50px;
+    padding:0 18px 0 95px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
 }
 
-.subtitle{
-font-size:15px;
+.logo-link{
+    width:76px;
+    height:76px;
+    top:9px;
+    left:14px;
 }
 
-.election-card{
-padding:22px;
+.menu{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    gap:8px;
 }
 
-.election-card h2{
-font-size:23px;
-}
-
-.election-card p{
-font-size:16px;
-}
-
-#stateSelect{
-width:95%;
+.menu a{
+    font-size:14px;
+    padding:8px 12px;
 }
 
 }
 
-/* ANIMATION */
 
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(25px);
+/* Mobile */
+@media (max-width: 768px){
+
+.top-header{
+    padding:8px 8px 12px;
 }
-to{
-opacity:1;
-transform:translateY(0);
+
+.banner-nav{
+    width:100%;
+    height:auto;
+    min-height:88px;
+    border-radius:40px 0 0 40px;
+    padding:10px 10px 10px 82px;
+    justify-content:flex-end;
 }
+
+.logo-link{
+    width:62px;
+    height:62px;
+    left:10px;
+    top:13px;
+}
+
+.menu{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    gap:6px;
+}
+
+.menu a{
+    font-size:12px;
+    padding:7px 10px;
+}
+
+}
+
+
+/* Small Mobile */
+@media (max-width: 480px){
+
+.banner-nav{
+    min-height:82px;
+    padding:8px 8px 8px 72px;
+    border-radius:32px 0 0 32px;
+}
+
+.logo-link{
+    width:54px;
+    height:54px;
+    left:8px;
+    top:14px;
+}
+
+.menu{
+    gap:5px;
+}
+
+.menu a{
+    font-size:11px;
+    padding:6px 8px;
+}
+
 }
