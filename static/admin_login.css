@@ -1,137 +1,334 @@
-/* admin_login.css */
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 body{
-    min-height:100vh;
+    height:100vh;
+    background:linear-gradient(135deg,#0a0f1f,#0f2027,#203a43);
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#00172d,#003566,#00509d);
-    padding:20px;
-    position:relative;
+}
+
+/* Main Container */
+.main-box{
+    width:1100px;
+    height:650px;
+    display:flex;
+    border-radius:25px;
     overflow:hidden;
-}
-.flash-msg{
-    background:#ff4d4d;
-    color:white;
-    padding:12px 18px;
-    border-radius:10px;
-    margin-bottom:15px;
-    font-weight:bold;
-    text-align:center;
-    max-width:380px;
-    width:100%;
+    box-shadow:0 0 35px rgba(0,0,0,0.4);
 }
 
-/* Animated background circles */
-body::before,
-body::after{
-    content:"";
-    position:absolute;
-    width:320px;
-    height:320px;
-    border-radius:50%;
-    background:rgba(255,255,255,0.05);
-    z-index:0;
-}
-
-body::before{
-    top:-120px;
-    left:-100px;
-}
-
-body::after{
-    bottom:-120px;
-    right:-100px;
-}
-
-/* Form card */
-form{
-    width:100%;
-    max-width:380px;
-    background:rgba(255,255,255,0.10);
-    padding:35px 30px;
-    border-radius:22px;
-    backdrop-filter:blur(14px);
-    box-shadow:0 20px 45px rgba(0,0,0,0.30);
-    position:relative;
-    z-index:2;
-}
-
-/* Heading */
-h2{
-    position:absolute;
-    top:calc(50% - 235px);
+/* Left Side */
+.left-panel{
+    width:45%;
+    background:linear-gradient(160deg,#00ffd5,#0099ff);
     color:#fff;
-    font-size:30px;
-    font-weight:700;
-    z-index:2;
-    text-align:center;
-    width:100%;
-    left:0;
+    padding:50px;
+}
+
+.logo{
+    width:80px;
+    margin-bottom:20px;
+}
+
+.left-panel h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.left-panel p{
+    font-size:18px;
+    margin-bottom:40px;
+}
+
+.security-box{
+    background:rgba(255,255,255,0.15);
+    padding:18px;
+    border-radius:15px;
+    margin-bottom:18px;
+    display:flex;
+    gap:15px;
+    align-items:center;
+    font-size:17px;
+}
+
+.security-box i{
+    font-size:24px;
+}
+
+/* Right Side */
+.right-panel{
+    width:55%;
+    background:#ffffff;
+    padding:60px;
+    position:relative;
+}
+
+.right-panel h2{
+    font-size:38px;
+    color:#111;
+}
+
+.subtitle{
+    color:#666;
+    margin-bottom:35px;
+}
+
+.flash-msg{
+    background:#ffe8e8;
+    color:red;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
 }
 
 /* Inputs */
-input{
-    width:100%;
-    height:50px;
-    border:none;
-    outline:none;
-    border-radius:14px;
-    padding:0 15px;
-    font-size:15px;
-    margin-bottom:16px;
-    background:rgba(255,255,255,0.92);
-    color:#111;
-    transition:0.3s;
+.input-box{
+    display:flex;
+    align-items:center;
+    background:#f3f5f8;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:18px;
 }
 
-input:focus{
-    transform:scale(1.02);
-    box-shadow:0 0 0 3px rgba(0,198,255,0.25);
+.input-box i{
+    color:#0099ff;
+    margin-right:12px;
+    font-size:18px;
+}
+
+.input-box input{
+    border:none;
+    background:none;
+    outline:none;
+    width:100%;
+    font-size:16px;
+}
+
+/* Fingerprint */
+.fingerprint-area{
+    text-align:center;
+    margin:25px 0;
+}
+
+.scan-circle{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    border:3px solid #00c3ff;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    animation:pulse 2s infinite;
+}
+
+.scan-circle i{
+    font-size:55px;
+    color:#0099ff;
+}
+
+.fingerprint-area p{
+    margin-top:10px;
+    color:#555;
 }
 
 /* Button */
 button{
     width:100%;
-    height:50px;
+    padding:15px;
     border:none;
-    border-radius:35px;
-    background:linear-gradient(90deg,#00c6ff,#0072ff);
-    color:#fff;
-    font-size:16px;
-    font-weight:700;
+    background:linear-gradient(90deg,#00ffd5,#0099ff);
+    color:white;
+    font-size:18px;
+    border-radius:12px;
     cursor:pointer;
+    font-weight:bold;
     transition:0.3s;
 }
 
 button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 12px 25px rgba(0,198,255,0.35);
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,153,255,0.3);
 }
 
-/* Mobile responsive */
-@media(max-width:480px){
-
-    h2{
-        top:calc(50% - 225px);
-        font-size:24px;
+/* Animation */
+@keyframes pulse{
+    0%{
+        box-shadow:0 0 0 0 rgba(0,153,255,0.6);
     }
-
-    form{
-        padding:28px 20px;
-        border-radius:18px;
+    70%{
+        box-shadow:0 0 0 25px rgba(0,153,255,0);
     }
-
-    input,
-    button{
-        height:46px;
-        font-size:14px;
+    100%{
+        box-shadow:0 0 0 0 rgba(0,153,255,0);
     }
+}
+/* ===============================
+   MOBILE RESPONSIVE CSS ADD THIS
+   =============================== */
+
+/* Tablet */
+@media (max-width: 992px){
+
+.main-box{
+    width:95%;
+    height:auto;
+    flex-direction:column;
+}
+
+.left-panel,
+.right-panel{
+    width:100%;
+}
+
+.left-panel{
+    padding:35px;
+    text-align:center;
+}
+
+.logo{
+    margin:auto;
+    display:block;
+    margin-bottom:15px;
+}
+
+.security-box{
+    justify-content:center;
+    text-align:left;
+}
+
+.right-panel{
+    padding:40px 30px;
+}
+
+.right-panel h2{
+    font-size:32px;
+    text-align:center;
+}
+
+.subtitle{
+    text-align:center;
+}
+
+}
+
+
+/* Mobile */
+@media (max-width: 768px){
+
+body{
+    padding:15px;
+    height:auto;
+}
+
+.main-box{
+    border-radius:18px;
+}
+
+.left-panel{
+    padding:25px 20px;
+}
+
+.left-panel h1{
+    font-size:30px;
+}
+
+.left-panel p{
+    font-size:15px;
+    margin-bottom:25px;
+}
+
+.security-box{
+    font-size:14px;
+    padding:14px;
+    gap:10px;
+}
+
+.security-box i{
+    font-size:18px;
+}
+
+.right-panel{
+    padding:30px 20px;
+}
+
+.right-panel h2{
+    font-size:28px;
+}
+
+.subtitle{
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.input-box{
+    padding:12px;
+}
+
+.input-box input{
+    font-size:15px;
+}
+
+.scan-circle{
+    width:90px;
+    height:90px;
+}
+
+.scan-circle i{
+    font-size:42px;
+}
+
+button{
+    padding:14px;
+    font-size:16px;
+}
+
+.flash-msg{
+    font-size:14px;
+    padding:10px;
+}
+
+}
+
+
+/* Extra Small Mobile */
+@media (max-width: 480px){
+
+.left-panel h1{
+    font-size:26px;
+}
+
+.right-panel h2{
+    font-size:24px;
+}
+
+.security-box{
+    flex-direction:column;
+    text-align:center;
+}
+
+.input-box i{
+    font-size:16px;
+}
+
+.scan-circle{
+    width:80px;
+    height:80px;
+}
+
+.scan-circle i{
+    font-size:36px;
+}
+
+button{
+    font-size:15px;
+}
+
 }
