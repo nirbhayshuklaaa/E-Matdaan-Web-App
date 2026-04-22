@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Matdaan | Secure Login</title>
+
+<link rel="icon" href="{{ url_for('static', filename='assets/logo.png') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<header class="topbar">
+    <img src="{{ url_for('static', filename='assets/logo.png') }}">
+    <h1>E-Matdaan User Login Portal</h1>
+</header>
+
+<div class="wrapper">
+
+    <!-- LEFT INFO -->
+    <div class="left">
+        <h2>Digital Voting System</h2>
+        <p>Secure • Verified • Transparent</p>
+
+        <div class="features">
+            <div>🔐 EPIC Verified Login</div>
+            <div>🏛️ State-wise Secure Database</div>
+            <div>⚡ Fast Authentication</div>
+        </div>
+    </div>
+
+    <!-- LOGIN CARD -->
+    <div class="card">
+
+        <h2>Welcome Back</h2>
+        <p>Login to continue voting</p>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="msg">
+              {% for msg in messages %}
+                <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form action="/login" method="POST">
+
+            <div class="field">
+                <input type="text" name="epic_no" placeholder="Epic Number">
+            </div>
+
+            <div class="field">
+                <input list="states" name="state_name" placeholder="State">
+                <datalist id="states">
+                    <option value="andhra_pradesh">
+                    <option value="arunachal_pradesh">
+                    <option value="assam">
+                    <option value="bihar">
+                    <option value="chhattisgarh">
+                    <option value="goa">
+                    <option value="gujarat">
+                    <option value="haryana">
+                    <option value="himachal_pradesh">
+                    <option value="jharkhand">
+                    <option value="karnataka">
+                    <option value="kerala">
+                    <option value="madhya_pradesh">
+                    <option value="maharashtra">
+                    <option value="manipur">
+                    <option value="meghalaya">
+                    <option value="mizoram">
+                    <option value="nagaland">
+                    <option value="odisha">
+                    <option value="punjab">
+                    <option value="rajasthan">
+                    <option value="sikkim">
+                    <option value="tamil_nadu">
+                    <option value="telangana">
+                    <option value="tripura">
+                    <option value="uttar_pradesh">
+                    <option value="uttarakhand">
+                    <option value="west_bengal">
+                    <option value="delhi">
+                    <option value="jammu_and_kashmir">
+                    <option value="ladakh">
+                </datalist>
+            </div>
+
+            <div class="field">
+                <input type="password" name="password" id="password" placeholder="Password">
+            </div>
+
+            <button type="submit" id="loginBtn">Login Securely</button>
+
+            <a href="/register_page">New user? Create account</a>
+            <a href="/">Forget Password ?</a>
+
+        </form>
+
+    </div>
+
+</div>
+<footer>
+    © 2026 E-Matdaan Portal | Secure Online Voting
+</footer>
+</body>
+</html>

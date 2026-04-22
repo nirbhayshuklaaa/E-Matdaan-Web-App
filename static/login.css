@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0b1220;
+    overflow-x: hidden;
+    color: white;
+}
+
+/* BACKGROUND */
+.bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top, #1e3a8a, #0b1220);
+    z-index: -1;
+}
+
+/* TOP BAR */
+.topbar {
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    background: rgba(0,0,0,0.25);
+}
+
+.topbar img {
+    width: 35px;
+}
+
+/* MAIN WRAPPER */
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 10%;
+    gap: 40px;
+}
+
+/* LEFT SECTION */
+.left {
+    max-width: 420px;
+}
+
+.left h2 {
+    font-size: 34px;
+}
+
+.left p {
+    opacity: 0.7;
+    margin-top: 10px;
+}
+
+.features {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* LOGIN CARD */
+.card {
+    width: 360px;
+    padding: 35px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* HEADINGS */
+.card h2 {
+    margin-bottom: 5px;
+}
+
+.card p {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* INPUT FIELD */
+.field {
+    position: relative;
+    margin-top: 20px;
+}
+
+.field input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+}
+
+.field label {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.field input:focus + label,
+.field input:valid + label {
+    top: -10px;
+    font-size: 11px;
+    color: #38bdf8;
+}
+
+/* PASSWORD ICON */
+.eye {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+/* CAPS WARNING */
+#capsWarning {
+    display: none;
+    color: orange;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg,#2563eb,#0ea5e9);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.03);
+}
+
+/* LINK */
+a {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+/* FLASH MESSAGE */
+.msg {
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(255,0,0,0.2);
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+/* ===================== */
+/* 🔥 RESPONSIVE DESIGN */
+/* ===================== */
+
+@media (max-width: 1024px) {
+    .wrapper {
+        padding: 0 5%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .wrapper {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 100px 20px 40px;
+        gap: 30px;
+    }
+
+    .left {
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .left h2 {
+        font-size: 26px;
+    }
+
+    .features {
+        align-items: center;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .topbar {
+        justify-content: center;
+        padding: 12px 20px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .left h2 {
+        font-size: 22px;
+    }
+
+    .card {
+        padding: 25px;
+        border-radius: 14px;
+    }
+
+    .field input {
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px;
+    }
+}
+footer{
+    text-align:center;
+    padding:14px;
+    color:#d9e7ff;
+    font-size:14px;
+}

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, flash, jsonify, session
 import mysql.connector
 from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 from mysql.connector import errorcode
 
 app = Flask(__name__)
@@ -50,12 +51,66 @@ def register_page():
 def login_page():
     return render_template("login.html")
 
+@app.route("/login", methods=["POST"])
+def login():
+
+    try:
+        epic_no = request.form.get("epic_no")
+        state_name = request.form.get("state_name")
+        password = request.form.get("password")
+
+        db = get_state_db(state_name)
+
+        if not db:
+            flash("❌ Inctive State Selected")
+            return redirect("/login_page")
+
+        cursor = db.cursor(dictionary=True)
+
+        # fetch full user
+        cursor.execute(
+            "SELECT password_hash FROM reg_voters WHERE epic_no=%s",
+            (epic_no,)
+        )
+
+        result = cursor.fetchone()
+
+        if not result:
+            flash("❌ EPIC not found in voter database")
+            return redirect("/login_page")
+
+        stored_hash = result["password_hash"]
+
+
+        if check_password_hash(stored_hash, password):
+            flash("✅ Login Successful!")
+            return redirect("/user_dashboard")
+
+        else:
+            flash("❌ Wrong Password")
+            return redirect("/login_page")
+
+    except Exception as e:
+        print("LOGIN ERROR:", e)
+        flash("❌ Something Went Wrong")
+        return redirect("/login_page")
+
 @app.route("/admin_login")
 def admin_login():
     return render_template("admin_login.html")
 
-# REGISTER USER IN SELECTED STATE DB
+@app.route("/user_dashboard",methods=['GET','POST'])
+def user_dashboard():
+    try:
+        return render_template("user_dashboard.html")
+        epic_no=request.form.get("name")
+        
+    
 
+
+    except Exception as e :
+        print("Something went wrong !")
+        return redirect("/login")
 
 # GET SELECTED STATE DATABASE
 def get_state_db(state_name):
@@ -135,7 +190,7 @@ def register():
         db.close()
 
         flash("✅ Registration Successful")
-        return redirect("/login_page")
+        return redirect("/login")
 
     except mysql.connector.Error as err:
 
