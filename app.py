@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, flash, jsonify, session
-import mysql.connector
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+import mysql.connector
+from db import get_db
 from mysql.connector import errorcode
 
 app = Flask(__name__)
@@ -222,37 +223,9 @@ def logout():
     flash("✅ Logged Out Successfully")
     return redirect("/home")
 
-# GET SELECTED STATE DATABASE
-def get_state_db(state_name):
-
-    main_db = get_main_db()
-    cursor = main_db.cursor(dictionary=True)
-
-    cursor.execute(
-        "SELECT db_name FROM states WHERE LOWER(state_name)=%s",
-        (state_name.strip().lower(),)
-    )
-
-    row = cursor.fetchone()
-
-    cursor.close()
-    main_db.close()
-
-    if not row:
-        return None
-
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Nir@1234",
-        database=row["db_name"]
-    )
-
-
 # REGISTER ROUTE
 @app.route("/register", methods=["POST"])
 def register():
-
     try:
         name = request.form.get("name")
         state_name = request.form.get("state_name")
@@ -261,20 +234,19 @@ def register():
         epic_no = request.form.get("epic_no")
         password = request.form.get("password")
 
-        # CONNECT STATE DB
-        db = get_state_db(state_name)
-
-        if not db:
-            flash("❌ Invalid State Selected")
+        # 🔥 VALIDATION BLOCK (MOST IMPORTANT FIX)
+        if not all([name, state_name, constituency, phone, epic_no, password]):
+            flash("❌ All fields are required")
             return redirect("/register_page")
 
+        db = get_db()
         cursor = db.cursor()
 
         # CHECK EPIC EXISTS
         cursor.execute(
-                "SELECT epic_no FROM Eci_voters WHERE epic_no=%s",
-                (epic_no,)
-                )
+            "SELECT epic_no FROM eci_voters WHERE epic_no=%s",
+            (epic_no,)
+        )
 
         result = cursor.fetchone()
 
@@ -289,10 +261,10 @@ def register():
 
         # INSERT USER
         cursor.execute("""
-            INSERT INTO reg_voters
-            (name, constituency, phone, password_hash, epic_no)
-            VALUES (%s,%s,%s,%s,%s)
-        """, (name, constituency, phone, hashed_pass, epic_no))
+            INSERT INTO users
+            (name, state_name, constituency, phone, password, epic_no)
+            VALUES (%s,%s,%s,%s,%s,%s)
+        """, (name, state_name, constituency, phone, hashed_pass, epic_no))
 
         db.commit()
 
@@ -300,16 +272,15 @@ def register():
         db.close()
 
         flash("✅ Registration Successful")
-        return redirect("/login")
+        return redirect("/login_page")
 
     except mysql.connector.Error as err:
-
         print("MYSQL ERROR:", err)
 
         if err.errno == errorcode.ER_DUP_ENTRY:
             flash("❌ Already Registered")
         else:
-            flash("Database Error !")
+            flash("Database Error!")
 
         return redirect("/register_page")
 
