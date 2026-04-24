@@ -82,13 +82,6 @@ def home():
     return render_template("index.html", notices=notice)
 
 
-# HOME
-@app.route("/")
-@app.route("/home")
-def home():
-    notices = get_notices()
-    return render_template("index.html", notices=notices)
-
 
 
 # PAGES
