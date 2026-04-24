@@ -33,84 +33,56 @@ def get_main_db():
         print("DB ERROR:", e)
         raise
 
-# ==========================================
-# STATE DATABASE CONNECTION
-# ==========================================
-def get_state_db(state_name):
-    try:
-        main_db = get_main_db()
-        cursor = main_db.cursor(dictionary=True)
-
-        cursor.execute(
-            "SELECT db_name FROM states WHERE LOWER(state_name)=%s",
-            (state_name.strip().lower(),)
-        )
-
-        row = cursor.fetchone()
-
-        cursor.close()
-        main_db.close()
-
-        if not row:
-            return None
-
-        db_name = row["db_name"]
-
-        db_url = os.getenv("DATABASE_URL")
-
-        if db_url:
-            data = urlparse(db_url)
-
-            return mysql.connector.connect(
-                host=data.hostname,
-                user=data.username,
-                password=data.password,
-                database=db_name,
-                port=data.port
-            )
-
-        return mysql.connector.connect(
-            host=os.getenv("MYSQLHOST", "localhost"),
-            user=os.getenv("MYSQLUSER", "root"),
-            password=os.getenv("MYSQLPASSWORD", ""),
-            database=db_name,
-            port=int(os.getenv("MYSQLPORT", 3306))
-        )
-
-    except Exception as e:
-        print("STATE DB ERROR:", e)
-        return None
 
 
-# ==========================================
-# NOTICES
-# ==========================================
+
+# GET ACTIVE NOTICES
 def get_notices():
     try:
         conn = get_main_db()
         cursor = conn.cursor(dictionary=True)
 
-        cursor.execute("""
-            SELECT notice
-            FROM notice
-            WHERE is_active = 1
+        query = """
+            SELECT 
+                message,
+            FROM notices
             ORDER BY n_id DESC
-        """)
+        """
 
-        data = cursor.fetchall()
+        cursor.execute(query)
 
-        cursor.close()
-        conn.close()
+        notice = cursor.fetchall()
 
-        return data
+        return notice if notice else []
 
-    except:
+    except mysql.connector.Error as err:
+        print("MYSQL NOTICE ERROR:", err)
         return []
 
+    except Exception as e:
+        print("GENERAL NOTICE ERROR:", e)
+        return []
 
-# ==========================================
+    finally:
+        try:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+        except:
+            pass
+
+
+
+# HOME PAGE ROUTE
+@app.route("/")
+@app.route("/home")
+def home():
+    notice = get_notices()
+    return render_template("index.html", notices=notice)
+
+
 # HOME
-# ==========================================
 @app.route("/")
 @app.route("/home")
 def home():
@@ -118,9 +90,8 @@ def home():
     return render_template("index.html", notices=notices)
 
 
-# ==========================================
+
 # PAGES
-# ==========================================
 @app.route("/register_page")
 def register_page():
     return render_template("register.html")
@@ -136,9 +107,9 @@ def admin_login():
     return render_template("admin_login.html")
 
 
-# ==========================================
+
 # REGISTER
-# ==========================================
+
 @app.route("/register", methods=["POST"])
 def register():
     try:
@@ -198,9 +169,9 @@ def register():
         return redirect("/register_page")
 
 
-# ==========================================
+
 # LOGIN
-# ==========================================
+
 @app.route("/login", methods=["POST"])
 def login():
     try:
@@ -254,9 +225,9 @@ def login():
         return redirect("/login_page")
 
 
-# ==========================================
+
 # USER DASHBOARD
-# ==========================================
+
 @app.route("/user_dashboard")
 def user_dashboard():
 
@@ -265,11 +236,11 @@ def user_dashboard():
         return redirect("/login_page")
 
     try:
-        db = get_state_db(session["state_name"])
+        db = get_main_db()
         cursor = db.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT id,name,party_name,symbol,constituency
+            SELECT id,candidate_name,party_name,symbol,constituency,state_name
             FROM candidates
             WHERE constituency=%s
             AND status='active'
@@ -293,9 +264,9 @@ def user_dashboard():
         return redirect("/login_page")
 
 
-# ==========================================
+
 # LOGOUT
-# ==========================================
+
 @app.route("/logout")
 def logout():
     session.clear()
@@ -303,8 +274,9 @@ def logout():
     return redirect("/home")
 
 
-# ==========================================
+
+
 # RUN
-# ==========================================
+
 if __name__ == "__main__":
     app.run(debug=True)
