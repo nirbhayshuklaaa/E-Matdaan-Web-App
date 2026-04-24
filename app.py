@@ -9,13 +9,6 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "secret123")
 
 
-# ==========================================
-# CENTRAL DATABASE CONNECTION (RAILWAY FIXED)
-# ==========================================
-import os
-import mysql.connector
-from urllib.parse import urlparse
-
 def get_main_db():
     try:
         url = os.getenv("DATABASE_URL")
@@ -177,7 +170,7 @@ def register():
         hashed_pass = generate_password_hash(password)
 
         cursor.execute("""
-            INSERT INTO users
+            INSERT INTO reg_voters
             (name, state_name, constituency, phone, password, epic_no)
             VALUES (%s,%s,%s,%s,%s,%s)
         """, (name, state_name, constituency, phone, hashed_pass, epic_no))
@@ -191,7 +184,6 @@ def register():
         return redirect("/login_page")
 
     except mysql.connector.Error as err:
-        print(err)
 
         if err.errno == errorcode.ER_DUP_ENTRY:
             flash("❌ Already Registered")
