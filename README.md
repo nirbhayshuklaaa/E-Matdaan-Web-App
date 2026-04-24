@@ -1,47 +1,88 @@
-# 🗳️ E-Matdaan – Digital Voting Web Application
+# 🇮🇳 E-Matdaan Web App
 
-E-Matdaan is a secure and smart **online voting web application** developed to modernize the traditional election process. It allows citizens to register, verify themselves, and cast votes digitally through a simple and responsive platform.
+**Live Demo:** https://e-matdaan-web-app.onrender.com
 
-This project is built using **HTML, CSS, JavaScript, Flask, and MySQL** with a focus on transparency, accessibility, and efficiency.
+E-Matdaan is a secure and modern **Online Voting Management System** built using **Python Flask + MySQL**.  
+This project is designed to digitize the election process with transparency, security, and ease of access.
 
 ---
 
 ## 🚀 Features
 
-### 👤 Voter Module
-- New voter registration
-- Secure login system
-- Profile verification
-- Cast vote online
-- One person, one vote system
-- View election status
+### 👤 User Panel
+- Secure Voter Registration using EPIC Number
+- Login Authentication
+- Password Hashing Security
+- Constituency Based Candidate Display
+- One Person One Vote System
+- Live Notices & Updates
+- Responsive User Dashboard
 
-### 🛠️ Admin Module
-- Secure admin login
-- Add / Remove candidates
-- Manage voters
-- Start / Stop elections
-- Publish notices & announcements
-- Live dashboard analytics
-- View total votes and turnout
+### 🗳️ Voting System
+- Digital Vote Casting
+- Duplicate Vote Protection
+- Real-Time Vote Storage
+- Fast Vote Count Management
 
-### 🔐 Security Features
-- Password encryption
-- Duplicate vote prevention
-- Session management
-- Role-based access control
+### 🛠️ Admin Panel
+- Secure Admin Login
+- Dashboard Management
+- Notice Publish / Control
+- Candidate Control
+- Election Monitoring
+- Live Vote Overview
+
+### 🔐 Security
+- Password Hashing
+- Session Management
+- Secure Login Flow
+- Controlled Access Routes
 
 ---
 
-## 💻 Tech Stack
+## 🧰 Tech Stack
 
-| Technology | Used For |
-|-----------|----------|
+| Technology | Usage |
+|-----------|-------|
+| Python | Backend Logic |
+| Flask | Web Framework |
+| MySQL | Database |
 | HTML5 | Structure |
 | CSS3 | Styling |
-| JavaScript | Frontend Interactivity |
-| Flask | Backend Framework |
-| Python | Server Logic |
-| MySQL | Database |
+| JavaScript | Dynamic UI |
+| Render | Deployment |
+| Railway | Cloud Database |
 
 ---
+
+## 🌐 Live Website
+
+👉 https://e-matdaan-web-app.onrender.com
+
+---
+
+## 📸 Project Preview
+
+Modern secure online voting platform for India with smart dashboard.
+
+---
+
+## 📂 Project Structure
+
+```bash
+E-Matdaan/
+│── app.py
+│── requirements.txt
+│── templates/
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── user_dashboard.html
+│   ├── admin_login.html
+│   └── admin_dashboard.html
+│
+│── static/
+│   ├── style.css
+│   ├── login.css
+│   ├── register.css
+│   └── assets/
