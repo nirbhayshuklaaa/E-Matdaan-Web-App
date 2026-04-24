@@ -79,7 +79,7 @@ def get_notices():
 @app.route("/home")
 def home():
     notice = get_notices()
-    return render_template("index.html", notices=notice)
+    return render_template("index.html", notice=notice)
 
 
 
