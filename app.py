@@ -212,16 +212,16 @@ def login():
             flash("❌ All fields required")
             return redirect("/login_page")
 
-        db = get_state_db(state_name)
+        db = get_main_db()
 
         if not db:
-            flash("❌ Invalid State")
+            flash("❌ Database Error !")
             return redirect("/login_page")
 
         cursor = db.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT name,password_hash,constituency
+            SELECT name,password,constituency
             FROM reg_voters
             WHERE epic_no=%s
             LIMIT 1
@@ -230,10 +230,10 @@ def login():
         user = cursor.fetchone()
 
         if not user:
-            flash("❌ EPIC Not Found")
+            flash("❌ Not Registeres or Invalid Epic_no")
             return redirect("/login_page")
 
-        if check_password_hash(user["password_hash"], password):
+        if check_password_hash(user["password"], password):
 
             session.clear()
             session["logged_in"] = True
