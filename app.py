@@ -12,34 +12,33 @@ app.secret_key = os.getenv("SECRET_KEY", "secret123")
 # ==========================================
 # CENTRAL DATABASE CONNECTION (RAILWAY FIXED)
 # ==========================================
+import os
+import mysql.connector
+from urllib.parse import urlparse
+
 def get_main_db():
     try:
-        db_url = os.getenv("DATABASE_URL")
+        url = os.getenv("DATABASE_URL")
 
-        if db_url:
-            data = urlparse(db_url)
+        if not url:
+            raise Exception("DATABASE_URL not found")
 
-            return mysql.connector.connect(
-                host=data.hostname,
-                user=data.username,
-                password=data.password,
-                database=data.path.lstrip("/"),
-                port=data.port
-            )
+        u = urlparse(url)
 
-        # fallback local if DATABASE_URL missing
-        return mysql.connector.connect(
-            host=os.getenv("MYSQLHOST", "localhost"),
-            user=os.getenv("MYSQLUSER", "root"),
-            password=os.getenv("MYSQLPASSWORD", ""),
-            database=os.getenv("MYSQLDATABASE", "central_eci_db"),
-            port=int(os.getenv("MYSQLPORT", 3306))
+        conn = mysql.connector.connect(
+            host=u.hostname,
+            user=u.username,
+            password=u.password,
+            database=u.path[1:],   # removes /
+            port=u.port
         )
+
+        print("Database Connected Successfully")
+        return conn
 
     except Exception as e:
         print("DB ERROR:", e)
         raise
-
 
 # ==========================================
 # STATE DATABASE CONNECTION
