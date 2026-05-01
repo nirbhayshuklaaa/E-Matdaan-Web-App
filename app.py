@@ -44,9 +44,9 @@ def get_notices():
 
         query = """
             SELECT 
-                message,
+                message
             FROM notices
-            ORDER BY n_id DESC
+            ORDER BY id DESC
         """
 
         cursor.execute(query)
