@@ -82,8 +82,6 @@ def home():
     return render_template("index.html", notice=notice)
 
 
-
-
 # PAGES
 @app.route("/register_page")
 def register_page():
@@ -237,11 +235,12 @@ def user_dashboard():
             FROM candidates
             WHERE constituency=%s
             AND status='active'
-            ORDER BY name
+            ORDER BY candidate_name
         """, (session["constituency"],))
 
         candidates = cursor.fetchall()
-
+        if not candidates:
+            flash("No candidates available for your constituency")
         return render_template(
             "user_dashboard.html",
             name=session["name"],
