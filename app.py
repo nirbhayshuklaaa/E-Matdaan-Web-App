@@ -337,9 +337,6 @@ def admin():
 @app.route("/admin_dashboard")
 def admin_dashboard():
 
-    if not admin_required():
-        return redirect("/admin_login")
-
     db = get_main_db()
     cursor = db.cursor(dictionary=True)
 
