@@ -337,11 +337,47 @@ def admin():
 @app.route("/admin_dashboard")
 def admin_dashboard():
 
-    if "admin_logged_in" not in session:
-        flash("❌ Unauthorized Access")
+    if not admin_required():
         return redirect("/admin_login")
 
-    return render_template("admin_dashboard.html")
+    db = get_main_db()
+    cursor = db.cursor(dictionary=True)
+
+    # Total voters
+    cursor.execute(
+        "SELECT COUNT(*) total FROM reg_voters"
+    )
+    voters = cursor.fetchone()["total"]
+
+    # Active elections
+    cursor.execute(
+        """
+        SELECT COUNT(*) total
+        FROM elections
+        WHERE status='active'
+        """
+    )
+    active_elections = cursor.fetchone()["total"]
+
+    # Inactive states
+    cursor.execute(
+        """
+        SELECT COUNT(*) total
+        FROM states
+        WHERE status='inactive'
+        """
+    )
+    inactive_states = cursor.fetchone()["total"]
+
+    cursor.close()
+    db.close()
+
+    return render_template(
+        "admin_dashboard.html",
+        voters=voters,
+        active_elections=active_elections,
+        inactive_states=inactive_states
+    )
 
 # RUN
 

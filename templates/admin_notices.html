@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Notice Management</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+
+<div class="main">
+
+    <section class="panel">
+
+        <div class="panel-head">
+            <h2>📢 Notice Management</h2>
+        </div>
+
+        <form method="POST" action="/admin/add_notice">
+
+            <input
+                type="text"
+                name="message"
+                placeholder="Write notice..."
+                required>
+
+            <button>Broadcast</button>
+
+        </form>
+
+        <br>
+
+        <table>
+
+            <tr>
+                <th>ID</th>
+                <th>Notice</th>
+                <th>Action</th>
+            </tr>
+
+            {% for n in notices %}
+
+            <tr>
+
+                <td>{{ n.id }}</td>
+
+                <td>{{ n.message }}</td>
+
+                <td>
+                    <a href="/admin/delete_notice/{{ n.id }}">
+                        Delete
+                    </a>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </section>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Election Control</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+
+<div class="main">
+
+<section class="panel">
+
+<h2>🏛 Create Election</h2>
+
+<form method="POST" action="/admin/add_election">
+
+    <input name="title" placeholder="Election Title">
+
+    <input name="state_name" placeholder="State">
+
+    <button>Create Election</button>
+
+</form>
+
+</section>
+
+</div>
+
+</body>
+</html>

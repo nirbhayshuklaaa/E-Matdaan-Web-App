@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>State Control</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+<body>
+
+<div class="main">
+
+<section class="panel">
+
+<h2>🗳 State Control</h2>
+
+<table>
+
+<tr>
+    <th>State</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for s in states %}
+
+<tr>
+
+    <td>{{ s.state_name }}</td>
+
+    <td>
+
+        {% if s.status=="active" %}
+            <span class="badge active">
+                ACTIVE
+            </span>
+        {% else %}
+            <span class="badge inactive">
+                INACTIVE
+            </span>
+        {% endif %}
+
+    </td>
+
+    <td>
+
+        {% if s.status=="active" %}
+
+            <a href="/admin/state/deactivate/{{ s.state_code }}">
+                Disable
+            </a>
+
+        {% else %}
+
+            <a href="/admin/state/activate/{{ s.state_code }}">
+                Enable
+            </a>
+
+        {% endif %}
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</section>
+
+</div>
+
+</body>
+</html>

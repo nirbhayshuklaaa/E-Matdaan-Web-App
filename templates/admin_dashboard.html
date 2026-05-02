@@ -1,149 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>E-Matdaan Admin Control Room</title>
-<link rel="stylesheet" href="{{url_for('static',filename='admin_dashboard.css')}}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
 <div class="dashboard">
 
-    <!-- Sidebar -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
 
-        <div class="brand">
-            <div class="logo">🏛️</div>
-            <h2>E-Matdaan</h2>
+        <div class="logo">
+            <h2>🏛 E-Matdaan</h2>
             <p>Admin Control</p>
         </div>
 
         <nav class="menu">
-            <a href="#overview" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-            <a href="#notice"><i class="fa-solid fa-bullhorn"></i> Notices</a>
-            <a href="#states"><i class="fa-solid fa-map-location-dot"></i> States</a>
-            <a href="#election"><i class="fa-solid fa-vote-yea"></i> Elections</a>
-            <a href="#analytics"><i class="fa-solid fa-chart-pie"></i> Analytics</a>
-            <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+
+            <a class="active" href="/admin_dashboard">
+                <i class="fa fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="/admin/notices">
+                <i class="fa fa-bullhorn"></i>
+                Notices
+            </a>
+
+            <a href="/admin/states">
+                <i class="fa fa-map"></i>
+                States
+            </a>
+
+            <a href="/admin/elections">
+                <i class="fa fa-vote-yea"></i>
+                Elections
+            </a>
+
+            <a href="/admin/analytics">
+                <i class="fa fa-chart-pie"></i>
+                Analytics
+            </a>
+
+            <a href="/logout">
+                <i class="fa fa-sign-out"></i>
+                Logout
+            </a>
+
         </nav>
 
     </aside>
 
-    <!-- Main -->
+
+    <!-- MAIN -->
     <main class="main">
 
-        <!-- Header -->
-        <header class="topbar">
+        <div class="topbar">
+
             <div>
                 <h1>Election Command Center</h1>
-                <p>National Election Monitoring & Administrative Control</p>
+                <p>National Monitoring Dashboard</p>
             </div>
 
-            <div class="admin-user">
-                <span>Administrator</span>
-                <div class="avatar">A</div>
-            </div>
-        </header>
+            <div class="avatar">A</div>
 
-        <!-- Cards -->
-        <section class="cards" id="overview">
+        </div>
 
-            <div class="card blue">
+
+        <!-- CARDS -->
+        <section class="cards">
+
+            <div class="card">
                 <p>Total Voters</p>
                 <h2>{{ voters }}</h2>
-                <span>Registered Citizens</span>
             </div>
 
-            <div class="card green">
+            <div class="card">
                 <p>Active Elections</p>
                 <h2>{{ active_elections }}</h2>
-                <span>Live Running</span>
             </div>
 
-            <div class="card orange">
+            <div class="card">
                 <p>Inactive States</p>
                 <h2>{{ inactive_states }}</h2>
-                <span>Pending Activation</span>
             </div>
 
-            <div class="card purple">
+            <div class="card">
                 <p>System Status</p>
                 <h2>100%</h2>
-                <span>Operational</span>
             </div>
 
         </section>
 
-        <!-- Notice -->
-        <section class="panel" id="notice">
-            <div class="panel-head">
-                <h2>📢 Broadcast Notice</h2>
-            </div>
 
-            <form method="POST" action="/admin/add_notice" class="notice-form">
-                <input type="text" name="message" placeholder="Enter announcement..." required>
-                <button type="submit">Broadcast</button>
-            </form>
-        </section>
-
-        <!-- States -->
-        <section class="panel" id="states">
+        <!-- QUICK ACTIONS -->
+        <section class="panel">
 
             <div class="panel-head">
-                <h2>🗳️ State Control Center</h2>
-                <input type="text" placeholder="Search State...">
+                <h2>Quick Actions</h2>
             </div>
 
-            <div class="state-grid">
+            <a href="/admin/notices">
+                <button>Manage Notices</button>
+            </a>
 
-                {% for s in states %}
-                <div class="state-box">
-
-                    <h3>{{ s.state_name }}</h3>
-
-                    {% if s.status == 'active' %}
-                        <span class="badge active">ACTIVE</span>
-                        <a href="/admin/state/deactivate/{{ s.state_code }}">Deactivate</a>
-                    {% else %}
-                        <span class="badge inactive">INACTIVE</span>
-                        <a href="/admin/state/activate/{{ s.state_code }}">Activate</a>
-                    {% endif %}
-
-                </div>
-                {% endfor %}
-
-            </div>
-
-        </section>
-
-        <!-- Analytics -->
-        <section class="panel" id="analytics">
-
-            <div class="panel-head">
-                <h2>📈 Live Insights</h2>
-            </div>
-
-            <div class="analytics-grid">
-
-                <div class="mini-box">
-                    <h4>Turnout</h4>
-                    <h2>78%</h2>
-                </div>
-
-                <div class="mini-box">
-                    <h4>Today's Logins</h4>
-                    <h2>245</h2>
-                </div>
-
-                <div class="mini-box">
-                    <h4>Security Alerts</h4>
-                    <h2>0</h2>
-                </div>
-
-            </div>
+            <a href="/admin/elections">
+                <button>Create Election</button>
+            </a>
 
         </section>
 
