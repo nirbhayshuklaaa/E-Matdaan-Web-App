@@ -266,7 +266,82 @@ def logout():
     return redirect("/home")
 
 
+# ADMIN LOGIN
 
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+        adhar_no = request.form.get("adhar_no")
+
+        if not all([username, password, adhar_no]):
+            flash("❌ All fields are required")
+            return redirect("/admin_login")
+
+        conn = None
+        cursor = None
+
+        try:
+            conn = get_main_db()
+            cursor = conn.cursor(dictionary=True)
+
+            cursor.execute("""
+                SELECT username, password, adhar_no
+                FROM admins
+                WHERE username = %s
+            """, (username,))
+
+            admin = cursor.fetchone()
+
+            if not admin:
+                flash("❌ Admin not found")
+                return redirect("/admin_login")
+
+            # Password check
+            if not check_password_hash(admin["password"], password):
+                flash("❌ Wrong password")
+                return redirect("/admin_login")
+
+            # Aadhaar check
+            if admin["adhar_no"] != adhar_no:
+                flash("❌ Aadhaar mismatch")
+                return redirect("/admin_login")
+
+            # ✅ Login success
+            session.clear()
+            session["admin_logged_in"] = True
+            session["admin_user"] = username
+
+            flash("✅ Admin Login Successful")
+            return redirect("/admin_dashboard")
+
+        except Exception as e:
+            print("ADMIN LOGIN ERROR:", e)
+            flash("❌ Something went wrong")
+            return redirect("/admin_login")
+
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+
+    return render_template("admin_login.html")
+
+
+# Admin Dashboard
+
+@app.route("/admin_dashboard")
+def admin_dashboard():
+
+    if "admin_logged_in" not in session:
+        flash("❌ Unauthorized Access")
+        return redirect("/admin_login")
+
+    return render_template("admin_dashboard.html")
 
 # RUN
 
