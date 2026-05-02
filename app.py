@@ -301,7 +301,7 @@ def admin():
                 return redirect("/admin_login")
 
             # Password check
-            if not check_password_hash(admin["password"], password):
+            if admin["password"] != password:
                 flash("❌ Wrong password")
                 return redirect("/admin_login")
 
