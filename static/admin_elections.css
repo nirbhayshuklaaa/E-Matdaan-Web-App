@@ -1,0 +1,241 @@
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body{
+
+    font-family:Arial, sans-serif;
+
+    min-height:100vh;
+
+    background:linear-gradient(
+        135deg,
+        #eef4ff,
+        #dbeafe
+    );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+
+    width:100%;
+    max-width:650px;
+}
+
+
+/* =========================
+   PANEL
+========================= */
+
+.panel{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:40px;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.12);
+
+    border-top:6px solid #003366;
+
+    animation:fadeIn 0.6s ease;
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.panel h2{
+
+    text-align:center;
+
+    color:#003366;
+
+    font-size:30px;
+
+    margin-bottom:35px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+form{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:20px;
+}
+
+
+/* =========================
+   INPUT + SELECT
+========================= */
+
+input,
+select{
+
+    width:100%;
+
+    padding:15px 18px;
+
+    border:1px solid #d9d9d9;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    outline:none;
+
+    transition:0.3s;
+
+    background:white;
+}
+
+
+input:focus,
+select:focus{
+
+    border-color:#003366;
+
+    box-shadow:
+    0 0 10px rgba(0,51,102,0.15);
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:16px;
+
+    border-radius:12px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    color:white;
+
+    background:linear-gradient(
+        90deg,
+        #003366,
+        #007bff
+    );
+
+    transition:0.3s;
+}
+
+
+button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.18);
+}
+
+
+/* =========================
+   PLACEHOLDER
+========================= */
+
+input::placeholder{
+
+    color:#888;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .panel{
+
+        padding:25px;
+    }
+
+
+    .panel h2{
+
+        font-size:24px;
+    }
+
+
+    input,
+    select,
+    button{
+
+        font-size:15px;
+
+        padding:14px;
+    }
+
+}
+
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+.flash-msg{
+
+    background:#e8f5e9;
+
+    color:#2e7d32;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+    text-align:center;
+
+    font-weight:bold;
+}

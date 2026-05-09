@@ -7,7 +7,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='admin_elections.css') }}">
 </head>
 
 <body>
@@ -19,6 +19,21 @@ content="width=device-width, initial-scale=1.0">
         <h2>
             🏛 Create Election
         </h2>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="flash-msg">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+{% endwith %}
 
         <form method="POST"
         action="/admin/add_election">

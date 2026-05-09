@@ -405,7 +405,7 @@ def admin_elections():
     )
 
 @app.route("/admin/add_election", methods=["POST"])
-def create_election():
+def add_election():
 
     if not session.get("admin_logged_in"):
         return redirect("/admin_login")
@@ -417,12 +417,11 @@ def create_election():
 
     if not all([title, state_name]):
 
-        flash("All fields required")
+        flash("❌ All fields required")
 
         return redirect("/admin/elections")
 
 
-    # Auto state codes
     state_codes = {
 
         "Andhra Pradesh": "AP",
@@ -470,46 +469,59 @@ def create_election():
     state_code = state_codes.get(state_name)
 
 
-    db = get_main_db()
-    cursor = db.cursor()
+    try:
+
+        db = get_main_db()
+        cursor = db.cursor()
 
 
-    cursor.execute(
-        """
-        INSERT INTO state_control
-        (
-            election_title,
-            state_name,
-            state_code,
-            status
+        cursor.execute(
+            """
+            INSERT INTO state_control
+            (
+                election_title,
+                state_name,
+                state_code,
+                status
+            )
+
+            VALUES
+            (
+                %s,
+                %s,
+                %s,
+                'inactive'
+            )
+            """,
+
+            (
+                title,
+                state_name,
+                state_code
+            )
         )
 
-        VALUES
-        (
-            %s,
-            %s,
-            %s,
-            'inactive'
-        )
-        """,
 
-        (
-            title,
-            state_name,
-            state_code
-        )
-    )
+        db.commit()
 
 
-    db.commit()
-
-    cursor.close()
-    db.close()
+        flash("✅ Election Created Successfully")
 
 
-    flash("Election Created Successfully")
+    except Exception as e:
 
-    return redirect("/admin/elections")
+        print("DATABASE ERROR:", e)
+
+        flash("❌ Election not created")
+
+
+    finally:
+
+        cursor.close()
+        db.close()
+
+
+    return redirect("/admin_dashboard")
 # RUN
 
 if __name__ == "__main__":
