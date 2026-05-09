@@ -337,45 +337,179 @@ def admin():
 @app.route("/admin_dashboard")
 def admin_dashboard():
 
+    if not session.get("admin_logged_in"):
+        return redirect("/admin_login")
+
+
     db = get_main_db()
     cursor = db.cursor(dictionary=True)
 
-    # Total voters
-    cursor.execute(
-        "SELECT COUNT(*) total FROM reg_voters"
-    )
-    voters = cursor.fetchone()["total"]
 
-    # Active elections
+    # Total Registered Voters
     cursor.execute(
         """
-        SELECT COUNT(*) total
-        FROM elections
+        SELECT COUNT(*) AS total
+        FROM reg_voters
+        """
+    )
+
+    voters = cursor.fetchone()["total"]
+
+
+    # Active Elections
+    cursor.execute(
+        """
+        SELECT COUNT(*) AS total
+        FROM state_control
         WHERE status='active'
         """
     )
+
     active_elections = cursor.fetchone()["total"]
 
-    # Inactive states
+
+    # Inactive States
     cursor.execute(
         """
-        SELECT COUNT(*) total
-        FROM states
+        SELECT COUNT(*) AS total
+        FROM state_control
         WHERE status='inactive'
         """
     )
+
     inactive_states = cursor.fetchone()["total"]
+
 
     cursor.close()
     db.close()
 
+
     return render_template(
+
         "admin_dashboard.html",
+
         voters=voters,
         active_elections=active_elections,
         inactive_states=inactive_states
     )
 
+@app.route("/admin/elections")
+def admin_elections():
+
+    if not session.get("admin_logged_in"):
+        return redirect("/admin_login")
+
+
+    return render_template(
+        "admin_elections.html"
+    )
+
+@app.route("/admin/add_election", methods=["POST"])
+def create_election():
+
+    if not session.get("admin_logged_in"):
+        return redirect("/admin_login")
+
+
+    title = request.form.get("title")
+    state_name = request.form.get("state_name")
+
+
+    if not all([title, state_name]):
+
+        flash("All fields required")
+
+        return redirect("/admin/elections")
+
+
+    # Auto state codes
+    state_codes = {
+
+        "Andhra Pradesh": "AP",
+        "Arunachal Pradesh": "AR",
+        "Assam": "AS",
+        "Bihar": "BR",
+        "Chhattisgarh": "CG",
+        "Goa": "GA",
+        "Gujarat": "GJ",
+        "Haryana": "HR",
+        "Himachal Pradesh": "HP",
+        "Jharkhand": "JH",
+        "Karnataka": "KA",
+        "Kerala": "KL",
+        "Madhya Pradesh": "MP",
+        "Maharashtra": "MH",
+        "Manipur": "MN",
+        "Meghalaya": "ML",
+        "Mizoram": "MZ",
+        "Nagaland": "NL",
+        "Odisha": "OD",
+        "Punjab": "PB",
+        "Rajasthan": "RJ",
+        "Sikkim": "SK",
+        "Tamil Nadu": "TN",
+        "Telangana": "TS",
+        "Tripura": "TR",
+        "Uttar Pradesh": "UP",
+        "Uttarakhand": "UK",
+        "West Bengal": "WB",
+
+        "Delhi": "DL",
+        "Jammu and Kashmir": "JK",
+        "Ladakh": "LA",
+        "Puducherry": "PY",
+        "Chandigarh": "CH",
+        "Lakshadweep": "LD",
+
+        "Andaman and Nicobar Islands": "AN",
+
+        "Dadra and Nagar Haveli and Daman and Diu": "DN"
+    }
+
+
+    state_code = state_codes.get(state_name)
+
+
+    db = get_main_db()
+    cursor = db.cursor()
+
+
+    cursor.execute(
+        """
+        INSERT INTO state_control
+        (
+            election_title,
+            state_name,
+            state_code,
+            status
+        )
+
+        VALUES
+        (
+            %s,
+            %s,
+            %s,
+            'inactive'
+        )
+        """,
+
+        (
+            title,
+            state_name,
+            state_code
+        )
+    )
+
+
+    db.commit()
+
+    cursor.close()
+    db.close()
+
+
+    flash("Election Created Successfully")
+
+    return redirect("/admin/elections")
 # RUN
 
 if __name__ == "__main__":

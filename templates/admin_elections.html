@@ -1,29 +1,123 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Election Control</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="admin.css">
 </head>
 
 <body>
 
-<div class="main">
+<div class="container">
 
-<section class="panel">
+    <div class="panel">
 
-<h2>🏛 Create Election</h2>
+        <h2>
+            🏛 Create Election
+        </h2>
 
-<form method="POST" action="/admin/add_election">
+        <form method="POST"
+        action="/admin/add_election">
 
-    <input name="title" placeholder="Election Title">
 
-    <input name="state_name" placeholder="State">
+            <select
+                name="Election Type"
+                required>
 
-    <button>Create Election</button>
+                <option value="">
+                    Select Type
+                </option>
 
-</form>
+                <option>Vidhan Sabha</option>
+                <option>lok Sabha</option>
+                </select>
 
-</section>
+
+            <select
+                name="state_name"
+                required>
+
+                <option value="">
+                    Select State
+                </option>
+
+                <option>Andhra Pradesh</option>
+                <option>Arunachal Pradesh</option>
+                <option>Assam</option>
+                <option>Bihar</option>
+                <option>Chhattisgarh</option>
+                <option>Goa</option>
+                <option>Gujarat</option>
+                <option>Haryana</option>
+                <option>Himachal Pradesh</option>
+                <option>Jharkhand</option>
+                <option>Karnataka</option>
+                <option>Kerala</option>
+                <option>Madhya Pradesh</option>
+                <option>Maharashtra</option>
+                <option>Manipur</option>
+                <option>Meghalaya</option>
+                <option>Mizoram</option>
+                <option>Nagaland</option>
+                <option>Odisha</option>
+                <option>Punjab</option>
+                <option>Rajasthan</option>
+                <option>Sikkim</option>
+                <option>Tamil Nadu</option>
+                <option>Telangana</option>
+                <option>Tripura</option>
+                <option>Uttar Pradesh</option>
+                <option>Uttarakhand</option>
+                <option>West Bengal</option>
+
+                <option>
+                    Andaman and Nicobar Islands
+                </option>
+
+                <option>
+                    Chandigarh
+                </option>
+
+                <option>
+                    Dadra and Nagar Haveli and Daman and Diu
+                </option>
+
+                <option>
+                    Delhi
+                </option>
+
+                <option>
+                    Jammu and Kashmir
+                </option>
+
+                <option>
+                    Ladakh
+                </option>
+
+                <option>
+                    Lakshadweep
+                </option>
+
+                <option>
+                    Puducherry
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+
+                Create Election
+
+            </button>
+
+        </form>
+
+    </div>
 
 </div>
 
